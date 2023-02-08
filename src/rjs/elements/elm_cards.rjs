@@ -1,0 +1,15 @@
+export default class ElmCards < HTMLElement
+  def initialize
+    super
+  end
+
+  def connectedCallback()
+  end
+
+  def disconnectedCallback()
+  end
+
+  def init_elm()
+    
+  end
+end
