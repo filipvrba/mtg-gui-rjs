@@ -1,5 +1,10 @@
 import '../css/style.css'
 import '../css/bootstrap.min.css'
 import './elements'
+import "API", "./third-side/api"
 
 # document.querySelector('#app').innerHTML = "<h1>Hello RubyJS</h1>"
+
+API.get_result("SELECT * FROM cards DECS LIMIT 5", lambda do |data|
+  console.log(data)
+end)
