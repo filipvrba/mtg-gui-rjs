@@ -2,9 +2,20 @@ import '../css/style.css'
 import '../css/bootstrap.min.css'
 import './elements'
 import "API", "./third-side/api"
+import 'ElmCards', './elements/elm_cards'
 
 # document.querySelector('#app').innerHTML = "<h1>Hello RubyJS</h1>"
 
-API.get_result("SELECT * FROM cards DECS LIMIT 5", lambda do |data|
-  console.log(data)
+def dispatch_data(data)
+  event = new CustomEvent(ElmCards::INIT, {
+    detail: {
+      data: data
+    }
+  })
+  document.dispatchEvent(event)
+end
+
+# Get Data
+API.get_result("SELECT * FROM cards WHERE hasFoil=0 LIMIT 5", lambda do |data|
+  dispatch_data(data)
 end)

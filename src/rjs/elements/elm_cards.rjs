@@ -1,15 +1,54 @@
 export default class ElmCards < HTMLElement
+  INIT = "ech_init"
+
   def initialize
     super
+
+    @h_init_elm = lambda { |e| init_elm(e.detail.data) }
   end
 
   def connectedCallback()
+    document.addEventListener(INIT, @h_init_elm)
   end
 
   def disconnectedCallback()
+    document.removeEventListener(INIT, @h_init_elm)
   end
 
-  def init_elm()
-    
+  def init_elm(data)
+    l_tbody = lambda do
+      result = ""
+      (0...data.length).step(1) do |i| card = data[i]
+        s_td = """
+        <tr>
+          <th scope='row' class='text-start'>#{card.name}</th>
+          <th scope='row' class='text-center'>#{card.types}</th>
+          <th scope='row' class='text-center'>#{card.colorIdentity}</th>
+          <th scope='row' class='text-center'>#{card.manaCost}</th>
+        </tr>
+        """
+        result += "#{s_td}\n"
+      end
+      return result
+    end
+    template = """
+      <div class='table-responsive'>
+        <table class='table text-center'>
+          <thead>
+            <tr>
+              <th style='width: 31%;'></th>
+              <th style='width: 22%;'>Type</th>
+              <th style='width: 22%;'>Color</th>
+              <th style='width: 22%;'>Cast</th>
+            </tr>
+          </thead>
+          <tbody>
+            #{l_tbody.call()}
+          </tbody>
+        </table>
+      </div>
+    """
+
+    self.innerHTML = template
   end
 end
