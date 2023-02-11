@@ -20,7 +20,9 @@ export default class ElmCards extends HTMLElement {
         let card = data[i];
         let s_td = `${`
         <tr>
-          <th scope='row' class='text-start'>${card.name}</th>
+          <th scope='row' class='text-start'>
+            <a href='#' onclick='click_select_card(${i})'>${card.name}</a>
+          </th>
           <th scope='row' class='text-center'>${card.types}</th>
           <th scope='row' class='text-center'>${card.colorIdentity}</th>
           <th scope='row' class='text-center'>${card.manaCost}</th>
@@ -53,4 +55,4 @@ export default class ElmCards extends HTMLElement {
   }
 };
 
-ElmCards.INIT = "ech_init"
+ElmCards.INIT = "ecsh_init"

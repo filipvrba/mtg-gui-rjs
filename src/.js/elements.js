@@ -1,2 +1,4 @@
 import ElmCards from "./elements/elm_cards";
-window.customElements.define("elm-cards", ElmCards)
+import ElmCard from "./elements/elm_card";
+window.customElements.define("elm-cards", ElmCards);
+window.customElements.define("elm-card", ElmCard)

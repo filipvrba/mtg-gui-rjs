@@ -1,8 +1,22 @@
 import '../css/style.css'
 import '../css/bootstrap.min.css'
+import './bootstrap.min'
+
 import './elements'
 import "API", "./third-side/api"
 import 'ElmCards', './elements/elm_cards'
+import 'ElmCard', './elements/elm_card'
+
+data = nil
+def click_select_card(id)
+  event = new CustomEvent(ElmCard::INIT, {
+    detail: {
+      data: data[id]
+    }
+  })
+  document.dispatchEvent(event)
+end
+window.click_select_card = click_select_card
 
 # document.querySelector('#app').innerHTML = "<h1>Hello RubyJS</h1>"
 
@@ -16,6 +30,7 @@ def dispatch_data(data)
 end
 
 # Get Data
-API.get_result("SELECT * FROM cards WHERE hasFoil=0 LIMIT 5", lambda do |data|
+API.get_result("SELECT * FROM cards WHERE hasFoil=0 LIMIT 5", lambda do |d|
+  data = d
   dispatch_data(data)
 end)

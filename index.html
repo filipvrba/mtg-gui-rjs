@@ -14,23 +14,47 @@
             <img src="/vite.svg" alt="mtg_icon" width="40" height="32" class="me-2">
             <span class="fs-4">MTG-GUI</span>
           </a>
-    
-          <form class="d-inline-flex mt-2 mt-md-0 ms-md-auto" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
-    
-        <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-          <h1 class="display-4 fw-normal">Filtering</h1>
-          <p class="fs-5 text-muted">Zde něco bude</p>
+
+          <div class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="cards-tab" data-bs-toggle="tab" data-bs-target="#cards-tab-pane" type="button" role="tab" aria-controls="cards-tab-pane" aria-selected="true">Main</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="card-tab" data-bs-toggle="tab" data-bs-target="#card-tab-pane" type="button" role="tab" aria-controls="card-tab-pane" aria-selected="false">Card</button>
+              </li>
+            </ul>
+          </div>
         </div>
       </header>
 
       <main>
-        <h2 class="display-6 text-center mb-4">Cards</h2>
-        <elm-cards></elm-cards>
+        
 
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="cards-tab-pane" role="tabpanel" aria-labelledby="cards-tab" tabindex="0">
+
+            
+
+            <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+              <h1 class="display-4 fw-normal">Filtering</h1>
+              <p class="fs-5 text-muted">Zde něco bude</p>
+
+              <form class="d-inline-flex mt-2 mt-md-0 ms-md-auto" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+
+            <h2 class="display-6 text-center mb-4">Cards</h2>
+            <elm-cards></elm-cards>
+
+          </div>
+          <div class="tab-pane fade" id="card-tab-pane" role="tabpanel" aria-labelledby="card-tab" tabindex="0">
+            <h2 class="display-6 text-center mb-4">Card</h2>
+            <elm-card></elm-card>
+          </div>
+        </div>
         
       </main>
     </div>

@@ -1,5 +1,5 @@
 export default class ElmCards < HTMLElement
-  INIT = "ech_init"
+  INIT = "ecsh_init"
 
   def initialize
     super
@@ -21,7 +21,9 @@ export default class ElmCards < HTMLElement
       (0...data.length).step(1) do |i| card = data[i]
         s_td = """
         <tr>
-          <th scope='row' class='text-start'>#{card.name}</th>
+          <th scope='row' class='text-start'>
+            <a href='#' onclick='click_select_card(#{i})'>#{card.name}</a>
+          </th>
           <th scope='row' class='text-center'>#{card.types}</th>
           <th scope='row' class='text-center'>#{card.colorIdentity}</th>
           <th scope='row' class='text-center'>#{card.manaCost}</th>

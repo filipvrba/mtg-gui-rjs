@@ -1,0 +1,24 @@
+export default class ElmCard < HTMLElement
+  INIT = "ech_init"
+
+  def initialize
+    super
+    @h_init_elm = lambda { |e| init_elm(e.detail.data) }
+    @card_tab = document.getElementById('card-tab')
+
+    self.innerHTML = '...'
+  end
+
+  def connectedCallback()
+    document.addEventListener(INIT, @h_init_elm)
+  end
+
+  def disconnectedCallback()
+    document.removeEventListener(INIT, @h_init_elm)
+  end
+
+  def init_elm(data)
+    console.log data
+    @card_tab.click()
+  end
+end
