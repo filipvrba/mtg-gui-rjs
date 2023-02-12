@@ -34,19 +34,32 @@ export default class ElmCard extends HTMLElement {
         <li class='list-inline-item'>Cast:</li>
         <li class='list-inline-item'>${card.manaCost}</li>
       </ul>
-      <ul class='list-inline'>
-        <li class='list-inline-item'>Pow/Tuf::</li>
-        <li class='list-inline-item'>${card.power}</li>
-      </ul>
+      
+      ${this.implement_dom(
+      `<ul class='list-inline'><li class='list-inline-item'>Pow/Tuf:</li><li class='list-inline-item'>${ElmCard.DOM_SYMBOL}</li></ul>`,
+      card.power
+    )}
       <p class='lead'>${card.text}</p>
-      <p><em>${card.flavorText}</em></p>
+      ${this.implement_dom(
+      `<p><em>${ElmCard.DOM_SYMBOL}</em></p>`,
+      card.flavorText
+    )}
     `}`;
+
     this.innerHTML = template
   };
 
   click() {
+    this._card_tab.className = "nav-link";
     this._card_tab.click()
+  };
+
+  implement_dom(dom, value) {
+    let result = "";
+    if (value != null) result = dom.replace(ElmCard.DOM_SYMBOL, value);
+    return result
   }
 };
 
-ElmCard.INIT = "ech_init"
+ElmCard.INIT = "ech_init";
+ElmCard.DOM_SYMBOL = "[*]"
