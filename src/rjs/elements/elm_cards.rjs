@@ -5,6 +5,8 @@ export default class ElmCards < HTMLElement
     super
 
     @h_init_elm = lambda { |e| init_elm(e.detail.data) }
+    
+    load_process()
   end
 
   def connectedCallback()
@@ -49,6 +51,18 @@ export default class ElmCards < HTMLElement
           </tbody>
         </table>
       </div>
+    """
+
+    self.innerHTML = template
+  end
+
+  def load_process()
+    template = """
+    <div class='d-flex justify-content-center'>
+      <div class='spinner-border text-primary' role='status'>
+        <span class='visually-hidden'>Loading...</span>
+      </div>
+    </div>
     """
 
     self.innerHTML = template

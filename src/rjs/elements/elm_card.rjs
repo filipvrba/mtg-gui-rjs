@@ -6,8 +6,6 @@ export default class ElmCard < HTMLElement
     super
     @h_init_elm = lambda { |e| init_elm(e.detail.data); click() }
     @card_tab = document.getElementById('card-tab')
-
-    self.innerHTML = '...'
   end
 
   def connectedCallback()
@@ -25,15 +23,9 @@ export default class ElmCard < HTMLElement
         <li class='list-inline-item'>Type:</li>
         <li class='list-inline-item'>#{card.type}</li>
       </ul>
-      <ul class='list-inline'>
-        <li class='list-inline-item'>Color:</li>
-        <li class='list-inline-item'>#{card.colorIdentity}</li>
-      </ul>
-      <ul class='list-inline'>
-        <li class='list-inline-item'>Cast:</li>
-        <li class='list-inline-item'>#{card.manaCost}</li>
-      </ul>
       
+      #{implement_dom("<ul class='list-inline'><li class='list-inline-item'>Color:</li><li class='list-inline-item'>#{DOM_SYMBOL}</li></ul>", card.colorIdentity)}
+      #{implement_dom("<ul class='list-inline'><li class='list-inline-item'>Cast:</li><li class='list-inline-item'>#{DOM_SYMBOL}</li></ul>", card.manaCost)}
       #{implement_dom("<ul class='list-inline'><li class='list-inline-item'>Pow/Tuf:</li><li class='list-inline-item'>#{DOM_SYMBOL}</li></ul>", card.power)}
       <p class='lead'>#{card.text}</p>
       #{implement_dom("<p><em>#{DOM_SYMBOL}</em></p>", card.flavorText)}

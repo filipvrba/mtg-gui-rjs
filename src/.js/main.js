@@ -21,7 +21,7 @@ function dispatch_data(data) {
 
 // Get Data
 API.get_result(
-  "SELECT * FROM cards WHERE hasFoil=0 LIMIT 5",
+  "SELECT * FROM cards WHERE hasFoil=0 LIMIT 50",
 
   (d) => {
     data = d;

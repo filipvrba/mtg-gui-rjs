@@ -1,7 +1,8 @@
 export default class ElmCards extends HTMLElement {
   constructor() {
     super();
-    this._h_init_elm = e => this.init_elm(e.detail.data)
+    this._h_init_elm = e => this.init_elm(e.detail.data);
+    this.load_process()
   };
 
   connectedCallback() {
@@ -50,6 +51,17 @@ export default class ElmCards extends HTMLElement {
           </tbody>
         </table>
       </div>
+    `}`;
+    this.innerHTML = template
+  };
+
+  load_process() {
+    let template = `${`
+    <div class='d-flex justify-content-center'>
+      <div class='spinner-border text-primary' role='status'>
+        <span class='visually-hidden'>Loading...</span>
+      </div>
+    </div>
     `}`;
     this.innerHTML = template
   }

@@ -7,8 +7,7 @@ export default class ElmCard extends HTMLElement {
       return this.click()
     };
 
-    this._card_tab = document.getElementById("card-tab");
-    this.innerHTML = "..."
+    this._card_tab = document.getElementById("card-tab")
   };
 
   connectedCallback() {
@@ -26,15 +25,15 @@ export default class ElmCard extends HTMLElement {
         <li class='list-inline-item'>Type:</li>
         <li class='list-inline-item'>${card.type}</li>
       </ul>
-      <ul class='list-inline'>
-        <li class='list-inline-item'>Color:</li>
-        <li class='list-inline-item'>${card.colorIdentity}</li>
-      </ul>
-      <ul class='list-inline'>
-        <li class='list-inline-item'>Cast:</li>
-        <li class='list-inline-item'>${card.manaCost}</li>
-      </ul>
       
+      ${this.implement_dom(
+      `<ul class='list-inline'><li class='list-inline-item'>Color:</li><li class='list-inline-item'>${ElmCard.DOM_SYMBOL}</li></ul>`,
+      card.colorIdentity
+    )}
+      ${this.implement_dom(
+      `<ul class='list-inline'><li class='list-inline-item'>Cast:</li><li class='list-inline-item'>${ElmCard.DOM_SYMBOL}</li></ul>`,
+      card.manaCost
+    )}
       ${this.implement_dom(
       `<ul class='list-inline'><li class='list-inline-item'>Pow/Tuf:</li><li class='list-inline-item'>${ElmCard.DOM_SYMBOL}</li></ul>`,
       card.power

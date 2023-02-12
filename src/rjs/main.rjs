@@ -29,7 +29,7 @@ def dispatch_data(data)
 end
 
 # Get Data
-API.get_result("SELECT * FROM cards WHERE hasFoil=0 LIMIT 5", lambda do |d|
+API.get_result("SELECT * FROM cards WHERE hasFoil=0 LIMIT 50", lambda do |d|
   data = d
   dispatch_data(data)
 end)
