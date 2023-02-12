@@ -3,7 +3,7 @@ export default class ElmCard < HTMLElement
 
   def initialize
     super
-    @h_init_elm = lambda { |e| init_elm(e.detail.data) }
+    @h_init_elm = lambda { |e| init_elm(e.detail.data); click() }
     @card_tab = document.getElementById('card-tab')
 
     self.innerHTML = '...'
@@ -17,8 +17,33 @@ export default class ElmCard < HTMLElement
     document.removeEventListener(INIT, @h_init_elm)
   end
 
-  def init_elm(data)
-    console.log data
+  def init_elm(card)
+    template = """
+      <h2 class='display-6 text-center mb-4'>#{card.name}</h2>
+      <ul class='list-inline'>
+        <li class='list-inline-item'>Type:</li>
+        <li class='list-inline-item'>#{card.type}</li>
+      </ul>
+      <ul class='list-inline'>
+        <li class='list-inline-item'>Color:</li>
+        <li class='list-inline-item'>#{card.colorIdentity}</li>
+      </ul>
+      <ul class='list-inline'>
+        <li class='list-inline-item'>Cast:</li>
+        <li class='list-inline-item'>#{card.manaCost}</li>
+      </ul>
+      <ul class='list-inline'>
+        <li class='list-inline-item'>Pow/Tuf::</li>
+        <li class='list-inline-item'>#{card.power}</li>
+      </ul>
+      <p class='lead'>#{card.text}</p>
+      <p><em>#{card.flavorText}</em></p>
+    """
+
+    self.innerHTML = template
+  end
+
+  def click()
     @card_tab.click()
   end
 end
