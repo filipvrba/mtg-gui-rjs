@@ -1,0 +1,39 @@
+export default class ElmPagination < HTMLElement
+  INIT = "eph_init"
+  ROWS_MAX = 50
+
+  def initialize
+    super
+    @h_init_elm = lambda { |d| init_elm(d.detail.data) }
+  end
+
+  def connectedCallback()
+    document.addEventListener(INIT, @h_init_elm)
+  end
+
+  def disconnectedCallback()
+    document.removeEventListener(INIT, @h_init_elm)
+  end
+
+  def init_elm(rows)
+    template = """
+    <nav aria-label='Standard pagination' class='d-flex justify-content-center'>
+      <ul class='pagination'>
+        <li class='page-item'>
+          <a class='page-link' href='#' aria-label='Previous'>
+            <span aria-hidden='true'>«</span>
+          </a>
+        </li>
+        <li class='page-item'><a class='page-link' href='#'>1</a></li>
+        <li class='page-item'>
+          <a class='page-link' href='#' aria-label='Next'>
+            <span aria-hidden='true'>»</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    """
+
+    self.innerHTML = template
+  end
+end

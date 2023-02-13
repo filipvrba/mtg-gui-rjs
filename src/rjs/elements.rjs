@@ -1,5 +1,7 @@
 import "ElmCards", "./elements/elm_cards"
 import "ElmCard", "./elements/elm_card"
+import "ElmPagination", "./elements/elm_pagination"
 
 window.customElements.define( 'elm-cards', ElmCards )
 window.customElements.define( 'elm-card', ElmCard )
+window.customElements.define( 'elm-pagination', ElmPagination )
