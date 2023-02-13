@@ -1,0 +1,84 @@
+import "API", "../third-side/api"
+import 'ElmCard', './elm_card'
+import 'ElmCards', './elm_cards'
+import 'ElmPagination', './elm_pagination'
+
+export default class ElmMain < HTMLElement
+  def initialize
+    super
+
+    @q_where = "hasFoil=0"
+    @qw_row  = "row > 0 AND row <= #{ElmCards::CARDS_MAX}"
+    @select_query = "SELECT * FROM (SELECT ROW_NUMBER() OVER() row, * FROM cards WHERE #{@q_where}) t WHERE #{@qw_row} AND #{@q_where}"
+    @count_query  = "SELECT COUNT(*) as rows FROM cards WHERE #{@q_where}"
+
+    @data = nil
+    @rows = 0
+
+    init_elm()
+    init_api_select()
+    init_api_count()
+
+    window.click_select_card = click_select_card
+  end
+
+  def connectedCallback()
+    # document.addEventListener(INIT, @h_init_elm)
+  end
+
+  def disconnectedCallback()
+    # document.removeEventListener(INIT, @h_init_elm)
+  end
+
+  def init_elm()
+    template = """
+      <div class='pricing-header p-3 pb-md-4 mx-auto text-center'>
+        <h1 class='display-4 fw-normal'>Filtering</h1>
+        <p class='fs-5 text-muted'>Zde něco bude</p>
+
+        <form class='d-inline-flex mt-2 mt-md-0 ms-md-auto' role='search'>
+          <input class='form-control me-2' type='search' placeholder='Search' aria-label='Search'>
+          <button class='btn btn-outline-success' type='submit'>Search</button>
+        </form>
+      </div>
+
+      <h2 class='display-6 text-center mb-4'>Cards</h2>
+      <elm-cards></elm-cards>
+      <elm-pagination></elm-pagination>
+    """
+
+    self.innerHTML = template
+  end
+
+  def init_api_select()
+    API.get_result(@select_query, lambda do |d|  # SELECT * FROM cards WHERE hasFoil=0 LIMIT 50
+      @data = d
+      dispatch_data(ElmCards::INIT, @data)
+    end)
+  end
+
+  def init_api_count()
+    API.get_result(@count_query, lambda do |d|
+      @rows = parseInt(d[0].rows)
+      dispatch_data(ElmPagination::INIT, @rows)
+    end)
+  end
+
+  def dispatch_data(env, data)
+    event = new CustomEvent(env, {
+      detail: {
+        data: data
+      }
+    })
+    document.dispatchEvent(event)
+  end
+
+  def click_select_card(id)
+    event = new CustomEvent(ElmCard::INIT, {
+      detail: {
+        data: @data[id]
+      }
+    })
+    document.dispatchEvent(event)
+  end
+end

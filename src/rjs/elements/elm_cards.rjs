@@ -1,5 +1,7 @@
 export default class ElmCards < HTMLElement
   INIT = "ecsh_init"
+  LOAD_PROCESS = "ecsh_load_p"
+  CARDS_MAX = 100
 
   def initialize
     super
@@ -54,6 +56,7 @@ export default class ElmCards < HTMLElement
     """
 
     self.innerHTML = template
+    load_process_event(false)
   end
 
   def load_process()
@@ -66,5 +69,15 @@ export default class ElmCards < HTMLElement
     """
 
     self.innerHTML = template
+    load_process_event(true)
+  end
+
+  def load_process_event(is_beginning)
+    event = new CustomEvent(LOAD_PROCESS, {
+      detail: {
+        is_beginning: is_beginning
+      }
+    })
+    document.dispatchEvent(event)
   end
 end

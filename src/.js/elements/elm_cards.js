@@ -52,7 +52,8 @@ export default class ElmCards extends HTMLElement {
         </table>
       </div>
     `}`;
-    this.innerHTML = template
+    this.innerHTML = template;
+    this.load_process_event(false)
   };
 
   load_process() {
@@ -63,8 +64,16 @@ export default class ElmCards extends HTMLElement {
       </div>
     </div>
     `}`;
-    this.innerHTML = template
+    this.innerHTML = template;
+    this.load_process_event(true)
+  };
+
+  load_process_event(is_beginning) {
+    let event = new CustomEvent(ElmCards.LOAD_PROCESS, {detail: {is_beginning}});
+    document.dispatchEvent(event)
   }
 };
 
-ElmCards.INIT = "ecsh_init"
+ElmCards.INIT = "ecsh_init";
+ElmCards.LOAD_PROCESS = "ecsh_load_p";
+ElmCards.CARDS_MAX = 100

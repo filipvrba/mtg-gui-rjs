@@ -1,39 +1,70 @@
+import "ElmCards", "./elm_cards" 
+
 export default class ElmPagination < HTMLElement
   INIT = "eph_init"
-  ROWS_MAX = 50
 
   def initialize
     super
     @h_init_elm = lambda { |d| init_elm(d.detail.data) }
+    @h_load_elm = lambda { |d| change_mode(!d.detail.is_beginning) }
   end
 
   def connectedCallback()
     document.addEventListener(INIT, @h_init_elm)
+    document.addEventListener(ElmCards::LOAD_PROCESS, @h_load_elm)
   end
 
   def disconnectedCallback()
     document.removeEventListener(INIT, @h_init_elm)
+    document.removeEventListener(ElmCards::LOAD_PROCESS, @h_load_elm)
   end
 
   def init_elm(rows)
+    pages_count = Math.floor(rows / ElmCards::CARDS_MAX)
+    l_select = lambda do
+      result = ""
+      (1..pages_count).step(1) do |i|
+        result += "<option value='#{i}'>#{i}</option>\n"
+      end
+      return result
+    end
     template = """
-    <nav aria-label='Standard pagination' class='d-flex justify-content-center'>
-      <ul class='pagination'>
-        <li class='page-item'>
-          <a class='page-link' href='#' aria-label='Previous'>
-            <span aria-hidden='true'>«</span>
-          </a>
-        </li>
-        <li class='page-item'><a class='page-link' href='#'>1</a></li>
-        <li class='page-item'>
-          <a class='page-link' href='#' aria-label='Next'>
-            <span aria-hidden='true'>»</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div id='page-mode' class='invisible'>
+      <nav aria-label='Standard pagination' class='d-flex justify-content-center'>
+        <ul class='pagination'>
+          <li class='page-item'>
+            <a class='page-link' href='#' aria-label='Previous'>
+              <span aria-hidden='true'>«</span>
+            </a>
+          </li>
+          <li class='page-item'>
+            <select class='form-select' id='page-select'>
+              #{l_select.call()}
+            </select>
+          </li>
+          <li class='page-item'>
+            <a class='page-link' href='#' aria-label='Next'>
+              <span aria-hidden='true'>»</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
     """
 
     self.innerHTML = template
+    @page_mode = document.getElementById('page-mode')
+  end
+
+  def change_mode(is_visible)
+    unless @page_mode
+      return
+    end
+
+    if is_visible
+      @page_mode.className = "visible"
+    else
+      @page_mode.className = "invisible"
+    end
   end
 end
