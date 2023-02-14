@@ -34,20 +34,16 @@ export default class ElmPagination extends HTMLElement {
     <div id='page-mode' class='invisible'>
       <nav aria-label='Standard pagination' class='d-flex justify-content-center'>
         <ul class='pagination'>
-          <li class='page-item'>
-            <a class='page-link' href='#' aria-label='Previous'>
-              <span aria-hidden='true'>«</span>
-            </a>
+          <li class='page-item list-inline-item'>
+          <button type='button' class='btn btn-light' onclick='page_select_previous()'>Previous</button>
           </li>
-          <li class='page-item'>
+          <li class='page-item list-inline-item'>
             <select class='form-select' id='page-select' onchange='page_select_change()'>
               ${l_select.call()}
             </select>
           </li>
-          <li class='page-item'>
-            <a class='page-link' href='#' aria-label='Next'>
-              <span aria-hidden='true'>»</span>
-            </a>
+          <li class='page-item list-inline-item'>
+            <button type='button' class='btn btn-light' onclick='page_select_next()'>Next</button>
           </li>
         </ul>
       </nav>
@@ -55,7 +51,10 @@ export default class ElmPagination extends HTMLElement {
     `}`;
     this.innerHTML = template;
     this._page_mode = document.getElementById("page-mode");
-    window.page_select_change = this.page_select_change.bind(this)
+    this._page_select = document.getElementById("page-select");
+    window.page_select_change = this.page_select_change.bind(this);
+    window.page_select_previous = this.page_select_previous.bind(this);
+    window.page_select_next = this.page_select_next.bind(this)
   };
 
   change_mode(is_visible) {
@@ -72,6 +71,24 @@ export default class ElmPagination extends HTMLElement {
     let elm_select = document.getElementById("page-select");
     let event = new CustomEvent(ElmPagination.SELECT, {detail: {value: parseInt(elm_select.value)}});
     document.dispatchEvent(event)
+  };
+
+  page_select_previous() {
+    let value = parseInt(this._page_select.value) - 1;
+
+    if (value > 0) {
+      this._page_select.value = value;
+      this._page_select.onchange()
+    }
+  };
+
+  page_select_next() {
+    let value = parseInt(this._page_select.value) + 1;
+
+    if (value <= this._page_select.length) {
+      this._page_select.value = value;
+      this._page_select.onchange()
+    }
   }
 };
 

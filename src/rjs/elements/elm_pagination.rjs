@@ -33,20 +33,16 @@ export default class ElmPagination < HTMLElement
     <div id='page-mode' class='invisible'>
       <nav aria-label='Standard pagination' class='d-flex justify-content-center'>
         <ul class='pagination'>
-          <li class='page-item'>
-            <a class='page-link' href='#' aria-label='Previous'>
-              <span aria-hidden='true'>«</span>
-            </a>
+          <li class='page-item list-inline-item'>
+          <button type='button' class='btn btn-light' onclick='page_select_previous()'>Previous</button>
           </li>
-          <li class='page-item'>
+          <li class='page-item list-inline-item'>
             <select class='form-select' id='page-select' onchange='page_select_change()'>
               #{l_select.call()}
             </select>
           </li>
-          <li class='page-item'>
-            <a class='page-link' href='#' aria-label='Next'>
-              <span aria-hidden='true'>»</span>
-            </a>
+          <li class='page-item list-inline-item'>
+            <button type='button' class='btn btn-light' onclick='page_select_next()'>Next</button>
           </li>
         </ul>
       </nav>
@@ -55,7 +51,11 @@ export default class ElmPagination < HTMLElement
 
     self.innerHTML = template
     @page_mode = document.getElementById('page-mode')
+    @page_select = document.getElementById('page-select')
+
     window.page_select_change = page_select_change 
+    window.page_select_previous = page_select_previous
+    window.page_select_next = page_select_next
   end
 
   def change_mode(is_visible)
@@ -78,5 +78,21 @@ export default class ElmPagination < HTMLElement
       }
     })
     document.dispatchEvent(event)
+  end
+
+  def page_select_previous()
+    value = parseInt(@page_select.value) - 1
+    if value > 0
+      @page_select.value = value
+      @page_select.onchange()
+    end
+  end
+
+  def page_select_next()
+    value = parseInt(@page_select.value) + 1
+    if value <= @page_select.length
+      @page_select.value = value
+      @page_select.onchange()
+    end
   end
 end
