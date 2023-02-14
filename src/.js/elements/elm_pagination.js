@@ -18,7 +18,7 @@ export default class ElmPagination extends HTMLElement {
   };
 
   init_elm(rows) {
-    let pages_count = Math.floor(rows / ElmCards.CARDS_MAX);
+    let pages_count = Math.ceil(rows / ElmCards.CARDS_MAX);
 
     let l_select = () => {
       let result = "";

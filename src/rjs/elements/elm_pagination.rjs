@@ -21,7 +21,7 @@ export default class ElmPagination < HTMLElement
   end
 
   def init_elm(rows)
-    pages_count = Math.floor(rows / ElmCards::CARDS_MAX)
+    pages_count = Math.ceil(rows / ElmCards::CARDS_MAX)
     l_select = lambda do
       result = ""
       (1..pages_count).step(1) do |i|

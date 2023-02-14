@@ -84,7 +84,8 @@ export default class ElmMain extends HTMLElement {
   };
 
   change_select_elm(page_id) {
-    console.log(page_id);
-    this.init_api_select(100, 200)
+    let row_max = page_id * ElmCards.CARDS_MAX;
+    let row_min = row_max - ElmCards.CARDS_MAX;
+    this.init_api_select(row_min, row_max)
   }
 }
