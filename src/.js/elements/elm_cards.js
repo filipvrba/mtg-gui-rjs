@@ -49,24 +49,33 @@ export default class ElmCards extends HTMLElement {
     };
 
     let template = `${`
-      <div class='table-responsive'>
-        <table class='table text-center'>
-          <thead>
-            <tr>
-              <th style='width: 31%;'></th>
-              <th style='width: 22%;'>Type</th>
-              <th style='width: 22%;'>Color</th>
-              <th style='width: 22%;'>Cast</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${l_tbody.call()}
-          </tbody>
-        </table>
+      <div class='text-center'>
+        <h2 class='h2'>No cards found</h2>
       </div>
     `}`;
-    this.innerHTML = template;
-    this.load_process_event(false)
+
+    if (data.length > 0) {
+      template = `${`
+        <div class='table-responsive'>
+          <table class='table text-center'>
+            <thead>
+              <tr>
+                <th style='width: 31%;'></th>
+                <th style='width: 22%;'>Type</th>
+                <th style='width: 22%;'>Color</th>
+                <th style='width: 22%;'>Cast</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${l_tbody.call()}
+            </tbody>
+          </table>
+        </div>
+      `}`;
+      this.load_process_event(false)
+    };
+
+    this.innerHTML = template
   };
 
   load_process() {

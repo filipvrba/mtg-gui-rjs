@@ -52,7 +52,7 @@ export default class ElmMain < HTMLElement
         <p class='fs-5 text-muted'>Zde něco bude</p>
 
         <div class='d-inline-flex mt-2 mt-md-0 ms-md-auto'>
-          <input id='search-input' class='form-control me-2' type='search' placeholder='Search' aria-label='Search'>
+          <input id='search-input' class='form-control me-2' type='search' placeholder='Name' aria-label='Search'>
           <button class='btn btn-outline-success' onclick='search_card()'>Search</button>
         </div>
       </div>

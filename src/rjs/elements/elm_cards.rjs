@@ -40,26 +40,35 @@ export default class ElmCards < HTMLElement
       end
       return result
     end
+
     template = """
-      <div class='table-responsive'>
-        <table class='table text-center'>
-          <thead>
-            <tr>
-              <th style='width: 31%;'></th>
-              <th style='width: 22%;'>Type</th>
-              <th style='width: 22%;'>Color</th>
-              <th style='width: 22%;'>Cast</th>
-            </tr>
-          </thead>
-          <tbody>
-            #{l_tbody.call()}
-          </tbody>
-        </table>
+      <div class='text-center'>
+        <h2 class='h2'>No cards found</h2>
       </div>
     """
+    if data.length > 0
+      template = """
+        <div class='table-responsive'>
+          <table class='table text-center'>
+            <thead>
+              <tr>
+                <th style='width: 31%;'></th>
+                <th style='width: 22%;'>Type</th>
+                <th style='width: 22%;'>Color</th>
+                <th style='width: 22%;'>Cast</th>
+              </tr>
+            </thead>
+            <tbody>
+              #{l_tbody.call()}
+            </tbody>
+          </table>
+        </div>
+      """
+
+      load_process_event(false)
+    end
 
     self.innerHTML = template
-    load_process_event(false)
   end
 
   def load_process()
