@@ -8,15 +8,16 @@ export default class ElmMain < HTMLElement
     super
     @h_paging_select_elm = lambda { |d| change_select_elm(d.detail.value) }
 
-    @q_where = "hasFoil=0"
-    @count_query  = "SELECT COUNT(*) as rows FROM cards WHERE #{@q_where}"
+    @q_where = [
+      "hasFoil=0",
+      "name LIKE \"%\"",
+    ]
 
     @data = nil
     @rows = 0
 
     init_elm()
-    init_api_select()
-    init_api_count()
+    search_card()
 
     window.click_select_card = click_select_card
   end
@@ -31,8 +32,17 @@ export default class ElmMain < HTMLElement
 
   def get_select_query(r_min, r_max)
     qw_row  = "row > #{r_min} AND row <= #{r_max}"
-    select_query = "SELECT * FROM (SELECT ROW_NUMBER() OVER() row, * FROM cards WHERE #{@q_where}) t WHERE #{qw_row} AND #{@q_where}"
+    select_query = "SELECT * FROM (SELECT ROW_NUMBER() OVER() row, * FROM cards WHERE #{get_where_query()}) t WHERE #{qw_row} AND #{get_where_query()}"
     return select_query
+  end
+
+  def get_count_query()
+    count_query = "SELECT COUNT(*) as rows FROM cards WHERE #{get_where_query()}"
+    return count_query
+  end
+
+  def get_where_query()
+    return @q_where.join(' AND ')
   end
 
   def init_elm()
@@ -41,10 +51,10 @@ export default class ElmMain < HTMLElement
         <h1 class='display-4 fw-normal'>Filtering</h1>
         <p class='fs-5 text-muted'>Zde něco bude</p>
 
-        <form class='d-inline-flex mt-2 mt-md-0 ms-md-auto' role='search'>
-          <input class='form-control me-2' type='search' placeholder='Search' aria-label='Search'>
-          <button class='btn btn-outline-success' type='submit'>Search</button>
-        </form>
+        <div class='d-inline-flex mt-2 mt-md-0 ms-md-auto'>
+          <input id='search-input' class='form-control me-2' type='search' placeholder='Search' aria-label='Search'>
+          <button class='btn btn-outline-success' onclick='search_card()'>Search</button>
+        </div>
       </div>
 
       <h2 class='display-6 text-center mb-4'>Cards</h2>
@@ -53,6 +63,8 @@ export default class ElmMain < HTMLElement
     """
 
     self.innerHTML = template
+    @search_input = document.getElementById('search-input')
+    window.search_card = search_card
   end
 
   def init_api_select(r_min = 0, r_max = ElmCards::CARDS_MAX)
@@ -66,7 +78,8 @@ export default class ElmMain < HTMLElement
   end
 
   def init_api_count()
-    API.get_result(@count_query, lambda do |d|
+    query = get_count_query()
+    API.get_result(query, lambda do |d|
       @rows = parseInt(d[0].rows)
       dispatch_data(ElmPagination::INIT, @rows)
     end)
@@ -95,5 +108,17 @@ export default class ElmMain < HTMLElement
     row_min = row_max - ElmCards::CARDS_MAX
 
     init_api_select(row_min, row_max)
+  end
+
+  def search_card()
+    c_name = @search_input.value
+    unless c_name
+      @q_where[1] = "name LIKE \"%\""
+    else
+      @q_where[1] = "name LIKE \"#{c_name}%\""
+    end
+
+    init_api_select()
+    init_api_count()
   end
 end
