@@ -6,9 +6,8 @@ import ElmPagination from "./elm_pagination";
 export default class ElmMain extends HTMLElement {
   constructor() {
     super();
+    this._h_paging_select_elm = d => this.change_select_elm(d.detail.value);
     this._q_where = "hasFoil=0";
-    this._qw_row = `row > 0 AND row <= ${ElmCards.CARDS_MAX}`;
-    this._select_query = `SELECT * FROM (SELECT ROW_NUMBER() OVER() row, * FROM cards WHERE ${this._q_where}) t WHERE ${this._qw_row} AND ${this._q_where}`;
     this._count_query = `SELECT COUNT(*) as rows FROM cards WHERE ${this._q_where}`;
     this._data = null;
     this._rows = 0;
@@ -18,11 +17,25 @@ export default class ElmMain extends HTMLElement {
     window.click_select_card = this.click_select_card.bind(this)
   };
 
-  // document.addEventListener(INIT, @h_init_elm)
-  connectedCallback() {};
+  connectedCallback() {
+    document.addEventListener(
+      ElmPagination.SELECT,
+      this._h_paging_select_elm
+    )
+  };
 
-  // document.removeEventListener(INIT, @h_init_elm)
-  disconnectedCallback() {};
+  disconnectedCallback() {
+    document.removeEventListener(
+      ElmPagination.SELECT,
+      this._h_paging_select_elm
+    )
+  };
+
+  get_select_query(r_min, r_max) {
+    let qw_row = `row > ${r_min} AND row <= ${r_max}`;
+    let select_query = `SELECT * FROM (SELECT ROW_NUMBER() OVER() row, * FROM cards WHERE ${this._q_where}) t WHERE ${qw_row} AND ${this._q_where}`;
+    return select_query
+  };
 
   init_elm() {
     let template = `${`
@@ -43,8 +56,11 @@ export default class ElmMain extends HTMLElement {
     this.innerHTML = template
   };
 
-  init_api_select() {
-    API.get_result(this._select_query, (d) => {
+  init_api_select(r_min=0, r_max=ElmCards.CARDS_MAX) {
+    document.dispatchEvent(new CustomEvent(ElmCards.INIT_PROCESS));
+    let query = this.get_select_query(r_min, r_max);
+
+    API.get_result(query, (d) => {
       this._data = d;
       return this.dispatch_data(ElmCards.INIT, this._data)
     })
@@ -65,5 +81,10 @@ export default class ElmMain extends HTMLElement {
   click_select_card(id) {
     let event = new CustomEvent(ElmCard.INIT, {detail: {data: this._data[id]}});
     document.dispatchEvent(event)
+  };
+
+  change_select_elm(page_id) {
+    console.log(page_id);
+    this.init_api_select(100, 200)
   }
 }

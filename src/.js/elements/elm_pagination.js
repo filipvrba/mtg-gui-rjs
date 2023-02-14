@@ -40,7 +40,7 @@ export default class ElmPagination extends HTMLElement {
             </a>
           </li>
           <li class='page-item'>
-            <select class='form-select' id='page-select'>
+            <select class='form-select' id='page-select' onchange='page_select_change()'>
               ${l_select.call()}
             </select>
           </li>
@@ -54,7 +54,8 @@ export default class ElmPagination extends HTMLElement {
     </div>
     `}`;
     this.innerHTML = template;
-    this._page_mode = document.getElementById("page-mode")
+    this._page_mode = document.getElementById("page-mode");
+    window.page_select_change = this.page_select_change.bind(this)
   };
 
   change_mode(is_visible) {
@@ -65,7 +66,14 @@ export default class ElmPagination extends HTMLElement {
     } else {
       this._page_mode.className = "invisible"
     }
+  };
+
+  page_select_change() {
+    let elm_select = document.getElementById("page-select");
+    let event = new CustomEvent(ElmPagination.SELECT, {detail: {value: parseInt(elm_select.value)}});
+    document.dispatchEvent(event)
   }
 };
 
-ElmPagination.INIT = "eph_init"
+ElmPagination.INIT = "eph_init";
+ElmPagination.SELECT = "eph_select"

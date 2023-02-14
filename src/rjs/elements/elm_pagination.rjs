@@ -1,7 +1,8 @@
 import "ElmCards", "./elm_cards" 
 
 export default class ElmPagination < HTMLElement
-  INIT = "eph_init"
+  INIT   = "eph_init"
+  SELECT = "eph_select"
 
   def initialize
     super
@@ -38,7 +39,7 @@ export default class ElmPagination < HTMLElement
             </a>
           </li>
           <li class='page-item'>
-            <select class='form-select' id='page-select'>
+            <select class='form-select' id='page-select' onchange='page_select_change()'>
               #{l_select.call()}
             </select>
           </li>
@@ -54,6 +55,7 @@ export default class ElmPagination < HTMLElement
 
     self.innerHTML = template
     @page_mode = document.getElementById('page-mode')
+    window.page_select_change = page_select_change 
   end
 
   def change_mode(is_visible)
@@ -66,5 +68,15 @@ export default class ElmPagination < HTMLElement
     else
       @page_mode.className = "invisible"
     end
+  end
+
+  def page_select_change()
+    elm_select = document.getElementById('page-select')
+    event = new CustomEvent(SELECT, {
+      detail: {
+        value: parseInt(elm_select.value)
+      }
+    })
+    document.dispatchEvent(event)
   end
 end

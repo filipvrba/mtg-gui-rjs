@@ -1,22 +1,25 @@
 export default class ElmCards < HTMLElement
   INIT = "ecsh_init"
   LOAD_PROCESS = "ecsh_load_p"
+  INIT_PROCESS = "ecsh_init_p"
+
   CARDS_MAX = 100
 
   def initialize
     super
 
     @h_init_elm = lambda { |e| init_elm(e.detail.data) }
-    
-    load_process()
+    @h_init_process = lambda { load_process() }
   end
 
   def connectedCallback()
     document.addEventListener(INIT, @h_init_elm)
+    document.addEventListener(INIT_PROCESS, @h_init_process)
   end
 
   def disconnectedCallback()
     document.removeEventListener(INIT, @h_init_elm)
+    document.removeEventListener(INIT_PROCESS, @h_init_process)
   end
 
   def init_elm(data)

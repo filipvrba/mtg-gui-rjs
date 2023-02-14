@@ -2,15 +2,28 @@ export default class ElmCards extends HTMLElement {
   constructor() {
     super();
     this._h_init_elm = e => this.init_elm(e.detail.data);
-    this.load_process()
+
+    this._h_init_process = () => {
+      return this.load_process()
+    }
   };
 
   connectedCallback() {
-    document.addEventListener(ElmCards.INIT, this._h_init_elm)
+    document.addEventListener(ElmCards.INIT, this._h_init_elm);
+
+    document.addEventListener(
+      ElmCards.INIT_PROCESS,
+      this._h_init_process
+    )
   };
 
   disconnectedCallback() {
-    document.removeEventListener(ElmCards.INIT, this._h_init_elm)
+    document.removeEventListener(ElmCards.INIT, this._h_init_elm);
+
+    document.removeEventListener(
+      ElmCards.INIT_PROCESS,
+      this._h_init_process
+    )
   };
 
   init_elm(data) {
@@ -76,4 +89,5 @@ export default class ElmCards extends HTMLElement {
 
 ElmCards.INIT = "ecsh_init";
 ElmCards.LOAD_PROCESS = "ecsh_load_p";
+ElmCards.INIT_PROCESS = "ecsh_init_p";
 ElmCards.CARDS_MAX = 100

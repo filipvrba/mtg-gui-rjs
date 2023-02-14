@@ -6,10 +6,9 @@ import 'ElmPagination', './elm_pagination'
 export default class ElmMain < HTMLElement
   def initialize
     super
+    @h_paging_select_elm = lambda { |d| change_select_elm(d.detail.value) }
 
     @q_where = "hasFoil=0"
-    @qw_row  = "row > 0 AND row <= #{ElmCards::CARDS_MAX}"
-    @select_query = "SELECT * FROM (SELECT ROW_NUMBER() OVER() row, * FROM cards WHERE #{@q_where}) t WHERE #{@qw_row} AND #{@q_where}"
     @count_query  = "SELECT COUNT(*) as rows FROM cards WHERE #{@q_where}"
 
     @data = nil
@@ -23,11 +22,17 @@ export default class ElmMain < HTMLElement
   end
 
   def connectedCallback()
-    # document.addEventListener(INIT, @h_init_elm)
+    document.addEventListener(ElmPagination::SELECT, @h_paging_select_elm)
   end
 
   def disconnectedCallback()
-    # document.removeEventListener(INIT, @h_init_elm)
+    document.removeEventListener(ElmPagination::SELECT, @h_paging_select_elm)
+  end
+
+  def get_select_query(r_min, r_max)
+    qw_row  = "row > #{r_min} AND row <= #{r_max}"
+    select_query = "SELECT * FROM (SELECT ROW_NUMBER() OVER() row, * FROM cards WHERE #{@q_where}) t WHERE #{qw_row} AND #{@q_where}"
+    return select_query
   end
 
   def init_elm()
@@ -50,8 +55,11 @@ export default class ElmMain < HTMLElement
     self.innerHTML = template
   end
 
-  def init_api_select()
-    API.get_result(@select_query, lambda do |d|  # SELECT * FROM cards WHERE hasFoil=0 LIMIT 50
+  def init_api_select(r_min = 0, r_max = ElmCards::CARDS_MAX)
+    document.dispatchEvent(new CustomEvent(ElmCards::INIT_PROCESS))
+
+    query = get_select_query(r_min, r_max)
+    API.get_result(query, lambda do |d|  # SELECT * FROM cards WHERE hasFoil=0 LIMIT 50
       @data = d
       dispatch_data(ElmCards::INIT, @data)
     end)
@@ -80,5 +88,10 @@ export default class ElmMain < HTMLElement
       }
     })
     document.dispatchEvent(event)
+  end
+
+  def change_select_elm(page_id)
+    console.log page_id
+    init_api_select(100, 200)
   end
 end
