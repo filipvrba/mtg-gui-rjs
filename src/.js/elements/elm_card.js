@@ -19,6 +19,18 @@ export default class ElmCard extends HTMLElement {
   };
 
   init_elm(card) {
+    let l_urls = () => {
+      let result = "";
+
+      Object.entries(card.purchaseUrls).forEach((obj) => {
+        let key = obj[0];
+        let value = obj[1];
+        result += `<li><a href='${value}' target='_blank'>${key}</a></li>\n`
+      });
+
+      return result
+    };
+
     let template = `${`
       <h2 class='display-6 text-center mb-4'>${card.name}</h2>
       <ul class='list-inline'>
@@ -43,6 +55,15 @@ export default class ElmCard extends HTMLElement {
       `<p><em>${ElmCard.DOM_SYMBOL}</em></p>`,
       card.flavorText
     )}
+
+      <ul class='list-unstyled'>
+        <li>
+          URLs:
+          <ul>
+            ${l_urls.call()}
+          </ul>
+        </li>
+      </ul>
     `}`;
 
     this.innerHTML = template
