@@ -19,6 +19,10 @@ export def mana_symbol_to_elm(value)
   w_elm = "<img src='/png/mana_w.png'>"
   u_elm = "<img src='/png/mana_u.png'>"
 
+  unless value
+    return ''
+  end
+
   return value
   .gsub('{W}', w_elm).replace('W', w_elm)
   .gsub('{U}', u_elm).replace('U', u_elm)

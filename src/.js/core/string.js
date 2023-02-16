@@ -18,6 +18,7 @@ String.prototype.gsub = gsub;
 export function mana_symbol_to_elm(value) {
   let w_elm = "<img src='/png/mana_w.png'>";
   let u_elm = "<img src='/png/mana_u.png'>";
+  if (!value) return "";
 
   return value.gsub("{W}", w_elm).replace("W", w_elm).gsub(
     "{U}",
