@@ -1,3 +1,5 @@
+import { mana_symbol_to_elm } from "../core/string";
+
 export default class ElmCard extends HTMLElement {
   constructor() {
     super();
@@ -44,7 +46,7 @@ export default class ElmCard extends HTMLElement {
     )}
       ${this.implement_dom(
       `<ul class='list-inline'><li class='list-inline-item'>Cast:</li><li class='list-inline-item'>${ElmCard.DOM_SYMBOL}</li></ul>`,
-      card.manaCost
+      mana_symbol_to_elm(card.manaCost)
     )}
       ${this.implement_dom(
       `<ul class='list-inline'><li class='list-inline-item'>Pow/Tuf:</li><li class='list-inline-item'>${ElmCard.DOM_SYMBOL}</li></ul>`,

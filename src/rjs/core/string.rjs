@@ -1,0 +1,25 @@
+def gsub(value_a, value_b)
+  value = self
+  unless value_a
+    return value
+  end
+
+  while true
+    if value.indexOf(value_a) > -1
+      value = value.replace(value_a, value_b)
+    else
+      break
+    end
+  end
+  return value
+end
+String.prototype.gsub = gsub
+
+export def mana_symbol_to_elm(value)
+  w_elm = "<img src='/png/mana_w.png'>"
+  u_elm = "<img src='/png/mana_u.png'>"
+
+  return value
+  .gsub('{W}', w_elm).replace('W', w_elm)
+  .gsub('{U}', u_elm).replace('U', u_elm)
+end

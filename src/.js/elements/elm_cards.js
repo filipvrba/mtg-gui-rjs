@@ -1,3 +1,5 @@
+import { mana_symbol_to_elm } from "../core/string";
+
 export default class ElmCards extends HTMLElement {
   constructor() {
     super();
@@ -38,8 +40,8 @@ export default class ElmCards extends HTMLElement {
             <a href='#' onclick='click_select_card(${i})'>${card.name}</a>
           </th>
           <th scope='row' class='text-center'>${card.types}</th>
-          <th scope='row' class='text-center'>${card.colorIdentity}</th>
-          <th scope='row' class='text-center'>${card.manaCost}</th>
+          <th scope='row' class='text-center'>${mana_symbol_to_elm(card.colorIdentity)}</th>
+          <th scope='row' class='text-center'>${mana_symbol_to_elm(card.manaCost)}</th>
         </tr>
         `}`;
         result += `${s_td}\n`
