@@ -91,7 +91,11 @@ export default class ElmCard extends HTMLElement {
 
   implement_dom(dom, value) {
     let result = "";
-    if (value != null) result = dom.replace(ElmCard.DOM_SYMBOL, value);
+
+    if (value != null && value != "") {
+      result = dom.replace(ElmCard.DOM_SYMBOL, value)
+    };
+
     return result
   }
 };

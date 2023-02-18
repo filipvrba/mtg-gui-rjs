@@ -72,7 +72,7 @@ export default class ElmCard < HTMLElement
 
   def implement_dom(dom, value)
     result = ""
-    unless value == nil
+    unless value == nil or value == ""
       result = dom.replace(DOM_SYMBOL, value)
     end
     return result
