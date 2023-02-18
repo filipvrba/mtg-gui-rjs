@@ -28,6 +28,23 @@ export default class ElmCard < HTMLElement
       end
       return result
     end
+    l_urls_template = lambda do
+      if card.purchaseUrls
+        template = """
+          <ul class='list-unstyled'>
+            <li>
+              URLs:
+              <ul>
+                #{l_urls.call()}
+              </ul>
+            </li>
+          </ul>
+        """
+        return template
+      else
+        return ""
+      end
+    end
 
     template = """
       <h2 class='display-6 text-center mb-4'>#{card.name}</h2>
@@ -42,14 +59,7 @@ export default class ElmCard < HTMLElement
       <p class='lead'>#{card.text}</p>
       #{implement_dom("<p><em>#{DOM_SYMBOL}</em></p>", card.flavorText)}
 
-      <ul class='list-unstyled'>
-        <li>
-          URLs:
-          <ul>
-            #{l_urls.call()}
-          </ul>
-        </li>
-      </ul>
+      #{l_urls_template.call()}
     """
 
     self.innerHTML = template

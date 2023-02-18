@@ -34,10 +34,11 @@ export default class ElmCards extends HTMLElement {
 
       for (let i = 0; i < data.length; i++) {
         let card = data[i];
+        let encode_name = encodeURIComponent(card.name);
         let s_td = `${`
-        <tr>
+        <tr id='${encode_name}'>
           <th scope='row' class='text-start'>
-            <a href='#' onclick='click_select_card(${i})'>${card.name}</a>
+            <a href='#${encode_name}' onclick='click_select_card(${i})'>${card.name}</a>
           </th>
           <th scope='row' class='text-center'>${card.types}</th>
           <th scope='row' class='text-center'>${mana_symbol_to_elm(card.colorIdentity)}</th>

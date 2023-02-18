@@ -33,6 +33,26 @@ export default class ElmCard extends HTMLElement {
       return result
     };
 
+    let l_urls_template = () => {
+      let template;
+
+      if (card.purchaseUrls) {
+        template = `${`
+          <ul class='list-unstyled'>
+            <li>
+              URLs:
+              <ul>
+                ${l_urls.call()}
+              </ul>
+            </li>
+          </ul>
+        `}`;
+        return template
+      } else {
+        return ""
+      }
+    };
+
     let template = `${`
       <h2 class='display-6 text-center mb-4'>${card.name}</h2>
       <ul class='list-inline'>
@@ -58,14 +78,7 @@ export default class ElmCard extends HTMLElement {
       card.flavorText
     )}
 
-      <ul class='list-unstyled'>
-        <li>
-          URLs:
-          <ul>
-            ${l_urls.call()}
-          </ul>
-        </li>
-      </ul>
+      ${l_urls_template.call()}
     `}`;
 
     this.innerHTML = template
